@@ -2,9 +2,9 @@ namespace SinasAPI.Models
 {
     public class UserDatabaseSettings
     {
-        public string ConnectionString;
-        public string Database;
-        public string Collection;
+        public string ConnectionString { get; set; } = null!;
+        public string Database { get; set; } = null!;
+        public string Collection { get; set; } = null!;
 
     }
 }

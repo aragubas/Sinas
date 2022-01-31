@@ -1,4 +1,5 @@
 using SinasAPI.Models;
+using SinasAPI.Services;
 
 namespace SinasAPI
 {
@@ -10,14 +11,11 @@ namespace SinasAPI
 
             // Add services to the container.
             builder.Services.Configure<UserDatabaseSettings>(builder.Configuration.GetSection("UsersDatabaseSettings"));
-            
-            builder.Services.AddControllers();
-            
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSingleton<UserService>();
 
-            var app = builder.Build();
+            builder.Services.AddControllers();
+
+            WebApplication app = builder.Build();
 
             // Configure the HTTP request pipeline.
             app.UseHttpsRedirection();

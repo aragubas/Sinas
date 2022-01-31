@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson.Serialization.Attributes;
+using SinasAPI.Models.RequestModels;
 
 namespace SinasAPI.Models
 {
@@ -17,5 +19,16 @@ namespace SinasAPI.Models
         [BsonElement("email_address")]
         public string EmailAddress;
 
+        public User(CreateUserRequest createUserRequest)
+        {
+            Id = Guid.NewGuid().ToString();
+             
+            Username = createUserRequest.Username.Trim();
+            
+            PasswordHasher<string> passwordHasher = new PasswordHasher<string>();
+            Password = passwordHasher.HashPassword(Username, createUserRequest.Password);
+            
+            EmailAddress = createUserRequest.EmailAddress;
+        }
     }
 }
