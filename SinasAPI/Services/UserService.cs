@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -22,6 +23,19 @@ namespace SinasAPI.Services
             await _userCollection.InsertOneAsync(newUser);
         }   
 
+        public bool CheckUserCredentials(string email_address, string Password)
+        {
+            PasswordHasher<string> hasher = new PasswordHasher<string>();
+            User retrivedUser =  _userCollection.Find<User>(user => user.EmailAddress == email_address).FirstOrDefault();
+
+            // Check if user is valid
+            if (retrivedUser == null) { return false; }
+
+            PasswordVerificationResult result = hasher.VerifyHashedPassword(retrivedUser.Username, retrivedUser.Password, Password);
+
+            return result == PasswordVerificationResult.Success;
+        }
+ 
         public async Task DeleteAsync(string id)
         {
             await _userCollection.DeleteOneAsync(user => user.Id == id);

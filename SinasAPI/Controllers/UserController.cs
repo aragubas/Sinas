@@ -4,6 +4,7 @@ using SinasAPI.Models;
 using SinasAPI.Models.RequestModels;
 using SinasAPI.Models.ResponseModels;
 using SinasAPI.Services;
+using SinasAPI.Auth;
 
 namespace SinasAPI.Controllers;
 
@@ -29,7 +30,7 @@ public class UserController : ControllerBase
         {
             return JsonConvert.SerializeObject(new GenericResponse("error", "invalid_data"));
         }
- 
+
         // Check if username already exists
         if (_userService.CheckUserExists(request.Username))
         {
@@ -42,5 +43,27 @@ public class UserController : ControllerBase
         return JsonConvert.SerializeObject(new GenericResponse("ok"));
     }
 
+    [HttpDelete]
+    [BasicAuth("User Management")]
+    public async Task<string> DeleteUser()
+    {
+        // Get the request data
+        DeleteUserRequest request = JsonConvert.DeserializeObject<DeleteUserRequest>(await Utils.StreamToString(HttpContext.Request.Body));
+
+        if (!request.IsValid())
+        {
+            return JsonConvert.SerializeObject(new GenericResponse("error", "invalid_data"));
+        }
+
+        
+
+        // Authorization Check
+        var @If = User;
+
+        
+        return "s";
+    }
+
+    
 
 }
