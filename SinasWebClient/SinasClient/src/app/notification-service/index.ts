@@ -21,7 +21,7 @@ export class NotificationService
 
         if (notificationFound) { return; }
 
-        this.notifications.push(new Notification(content + Date.now()));
+        this.notifications.push(new Notification(content));
     }
 
 }
