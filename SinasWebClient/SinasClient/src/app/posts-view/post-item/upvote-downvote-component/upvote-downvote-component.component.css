@@ -1,0 +1,11 @@
+main
+{
+    display: flex;
+    flex-direction: row;
+}
+
+button
+{
+
+    font-size: 100%;
+}

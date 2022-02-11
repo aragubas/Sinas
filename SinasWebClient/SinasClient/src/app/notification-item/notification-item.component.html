@@ -1,0 +1,5 @@
+<main [@openClose]="isClosing ? 'close' : 'open'" (@openClose.done)="animEnd()">
+    <button (click)="remove();">X</button>
+    <span>{{text}}</span>
+    <span id="count" *ngIf="count > 1">{{count}}</span>
+</main>

@@ -1,0 +1,18 @@
+<main [@openClose]="!close && NotificationService.notifications.length > 0 ? 'open' : 'close'" (@openClose.done)="animDone()">
+    <!-- This is where the notifications live -->
+    <article>
+        <app-notification-item *ngFor="let notification of NotificationService.notifications; index as i; trackBy: trackby" [text]="notification.text" [index]="i" [count]="notification.count">
+        </app-notification-item>
+
+    </article>
+ 
+    <header class="generic-header">
+        <section>
+            <span>Notification Center</span>
+        </section>
+
+        <nav>
+            <button class="close-button" (click)="deleteAll();">X</button>
+        </nav>
+    </header>
+</main>

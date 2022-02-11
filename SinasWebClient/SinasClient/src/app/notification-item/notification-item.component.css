@@ -1,0 +1,63 @@
+@keyframes in {
+    from { transform: scaleY(0%) rotateX(-80deg); opacity: 0%; }
+    to { transform: scaleY(100%); opacity: 100%; }
+}
+
+@keyframes out {
+    from { transform: scaleY(100%); opacity: 100%; }
+    to { transform: scaleY(0%) rotateX(-80deg); opacity: 0%; }
+    
+}
+
+main
+{
+    animation-name: in;
+    transform-origin: top;
+    animation-duration: 0.25s;
+
+    display: flex;
+    padding: 2px;
+    padding-left: 0;
+    border-bottom: 1px solid rgb(89, 83, 97);
+}
+
+main span
+{
+    margin-left: .5%;
+    width: 100%;
+}
+
+main button
+{
+    transition-property: width;
+    transition-duration: 0.1s;
+    
+    min-width: 10px;
+    width: 2%;
+    background-color: rgb(200, 100, 110);
+    color: transparent;
+}
+
+main button:hover
+{
+    background-color: rgb(240, 100, 110);
+    color: var(--textColor);
+    min-width: 20px;
+    width: 4%;
+}
+
+main button:active
+{
+    background-color: rgb(255, 100, 100);
+    color: white;
+    border: none!important;
+}
+
+main #count
+{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    width: auto;
+    margin-right: 1%;
+    font-weight: bold;
+    color: white;
+}
