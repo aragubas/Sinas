@@ -1,7 +1,7 @@
-<main [@openClose]="!close && NotificationService.notifications.length > 0 ? 'open' : 'close'" (@openClose.done)="animDone()">
+<main [@openClose]="!close && notificationService.notifications.length > 0 ? 'open' : 'close'" (@openClose.done)="animDone()">
     <!-- This is where the notifications live -->
     <article>
-        <app-notification-item *ngFor="let notification of NotificationService.notifications; index as i; trackBy: trackby" [text]="notification.text" [index]="i" [count]="notification.count">
+        <app-notification-item *ngFor="let notification of notificationService.notifications; index as i; trackBy: trackby" [text]="notification.text" [index]="i" [count]="notification.count" (isClosingEvent)="itemClosing($event)">
         </app-notification-item>
 
     </article>

@@ -14,7 +14,7 @@ import { Notification, NotificationService } from '../notification-service';
       })),
       
       state("close", style({
-        transform: 'translateY(-50%)',
+        transform: 'translateY(-100%)',
         opacity: 0
       })),
 
@@ -29,7 +29,7 @@ export class NotificationCenterComponent implements OnInit {
   close: boolean = false;
   private closeWait: NodeJS.Timeout | undefined;
 
-  constructor(public NotificationService: NotificationService) { }
+  constructor(public notificationService: NotificationService) { }
 
   ngOnInit(): void {
   }
@@ -43,7 +43,7 @@ export class NotificationCenterComponent implements OnInit {
   {
     if (this.close)
     {
-      this.NotificationService.notifications.splice(0, this.NotificationService.notifications.length);
+      this.notificationService.notifications.splice(0, this.notificationService.notifications.length);
 
       this.closeWait = setInterval(() =>{
         this.close = false;
@@ -51,6 +51,16 @@ export class NotificationCenterComponent implements OnInit {
       }, 1000)
     }
 
+  }
+
+  itemClosing(index: number)
+  {
+    console.log(index)
+
+    if (index == 0 && this.notificationService.notifications.length <= 1)
+    {
+      this.deleteAll();
+    }
   }
 
   deleteAll(): void
