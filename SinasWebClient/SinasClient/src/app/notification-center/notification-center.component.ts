@@ -9,17 +9,20 @@ import { Notification, NotificationService } from '../notification-service';
   animations: [
     trigger("openClose", [
       state("open", style({
-        transform: 'translateY(0)',
-        opacity: 1
+        transform: "translateY(0)",
+        visibility: "visible"
+
       })),
       
       state("close", style({
-        transform: 'translateY(-100%)',
-        opacity: 0
+        transform: "translateY(-100%)",
+        visibility: "hidden"
+
       })),
 
       transition("open <=> close", [
         animate('0.25s')
+
       ]),
 
     ])

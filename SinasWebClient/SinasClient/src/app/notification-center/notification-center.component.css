@@ -4,11 +4,11 @@ main
     transition-duration: 0.1s;
 
     position: absolute;
-    left: calc(50vw - 50%/2);
+    left: calc(100vw/2 - 60vw/2);
 
-    width: 50vw;
+    width: 60vw;
     background-color: var(--popupBackgroundColor);
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, .5);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, .5);
 
 }
 
