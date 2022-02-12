@@ -58,8 +58,6 @@ export class NotificationCenterComponent implements OnInit {
 
   itemClosing(index: number)
   {
-    console.log(index)
-
     if (index == 0 && this.notificationService.notifications.length <= 1)
     {
       this.deleteAll();
