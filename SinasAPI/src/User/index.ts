@@ -15,9 +15,7 @@ export async function getUsers(request: Request, response: Response) {
   const authenticationHeader = request.headers.authorization;
 
   if (!authenticationHeader) {
-    response
-      .status(400)
-      .json(new ErrorResponse("invalid_username_or_password"));
+    response.status(400).json(new ErrorResponse("invalid_credentials"));
     return;
   }
 
@@ -25,10 +23,8 @@ export async function getUsers(request: Request, response: Response) {
     .toString()
     .split(":");
 
-  if (authHeader[0].length <= 2 || authHeader[1].length <= 4) {
-    response
-      .status(400)
-      .json(new ErrorResponse("invalid_username_or_password"));
+  if (authHeader[0].length < 3 || authHeader[1].length < 4) {
+    response.status(400).json(new ErrorResponse("invalid_credentials"));
     return;
   }
 
@@ -37,7 +33,7 @@ export async function getUsers(request: Request, response: Response) {
   });
 
   if (!ceira) {
-    response.status(400).json(new ErrorResponse("user_not_found"));
+    response.status(404).json(new ErrorResponse("user_not_found"));
     return;
   }
 

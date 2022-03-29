@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Axios } from "axios";
+import { Axios, AxiosResponse } from "axios";
+import { Tropinete } from "../main";
 
 let submitting = ref(false);
 let errorMessage = ref("");
 let username = ref("");
 let email = ref("");
 let password = ref("");
+
+interface UserOperationResponse {
+  status: string;
+  message: string;
+}
 
 async function submitLoginForm() {
   const client = new Axios({ baseURL: "http://localhost:3333" });
@@ -18,15 +24,31 @@ async function submitLoginForm() {
     headers: authenticationHeader,
   });
 
+  // Handles incorrect credentials
   if (response.status == 400) {
-    errorMessage.value = "Invalid username or password";
+    const data = JSON.parse(response.data.toString()) as UserOperationResponse;
+    let message = "Unknown error.";
+
+    switch (data.message) {
+      case "invalid_credentials":
+        message = "Incorrect username or password";
+        break;
+    }
+
+    errorMessage.value = message;
     submitting.value = false;
     return;
   }
 
-  console.log(response.data);
+  // Handles user not found
+  if (response.status == 404) {
+    errorMessage.value = "User not found";
+    submitting.value = false;
+    return;
+  }
 
   submitting.value = false;
+  errorMessage.value = "Unknown error.";
 }
 </script>
 
@@ -49,6 +71,7 @@ async function submitLoginForm() {
           required
           placeholder="Username"
           autocomplete="username"
+          class="input"
           v-model="username"
           :disabled="submitting"
         />
@@ -58,6 +81,7 @@ async function submitLoginForm() {
           type="password"
           id="password-input"
           required
+          class="input"
           placeholder="Password"
           autocomplete="password"
           v-model="password"
@@ -71,7 +95,7 @@ async function submitLoginForm() {
           {{ errorMessage }}
         </p>
         <br v-if="errorMessage == ''" />
-        <button class="button" :disabled="submitting">Register</button>
+        <button class="button flex-1" :disabled="submitting">Login</button>
 
         <div
           class="loading-overlay"
@@ -83,6 +107,13 @@ async function submitLoginForm() {
         >
           <p class="text-white animate-pulse text-xl animate">Loading...</p>
         </div>
+
+        <footer class="text-xs mt-4">
+          <p>
+            Need an account?
+            <a href="" class="text-blue-500">Register</a>
+          </p>
+        </footer>
       </form>
     </div>
   </div>
@@ -106,7 +137,6 @@ async function submitLoginForm() {
 
 form {
   display: flex;
-  width: 50%;
   min-width: 300px;
   flex-direction: column;
   justify-content: center;
@@ -128,21 +158,5 @@ form {
   height: 100vh;
   justify-content: center;
   align-items: center;
-}
-
-input {
-  @apply bg-slate-600 text-slate-200 p-1 rounded-md;
-}
-
-input:focus {
-  @apply focus:bg-slate-500 focus:outline-none text-white;
-}
-
-.button {
-  @apply bg-slate-600 text-white p-1 rounded-md select-none;
-}
-
-.button:active {
-  @apply bg-slate-500;
 }
 </style>

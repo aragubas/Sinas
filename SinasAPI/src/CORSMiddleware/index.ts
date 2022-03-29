@@ -10,5 +10,6 @@ export default async function (
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
+
   await next();
 }

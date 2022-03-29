@@ -7,6 +7,8 @@ import LoginPage from "./components/LoginPage.vue";
 </template>
 
 <style>
+@import url("./css/controls.css");
+
 body {
   @apply bg-slate-800 text-slate-200;
   margin: 0;
