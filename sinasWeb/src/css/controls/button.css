@@ -1,7 +1,7 @@
 .button {
-  @apply bg-slate-600 text-white p-1 rounded-md select-none;
+  @apply bg-slate-600 text-slate-200 p-1 rounded-md select-none block;
 }
 
 .button:active {
-  @apply bg-slate-500;
+  @apply bg-slate-500 text-white;
 }

@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { Axios, AxiosResponse } from "axios";
 import OperationResponse from "../ResponseModels/OperationResponse";
+import { api_client, getAuthorizationHeader, saveCredentials, setCredentials } from "../API";
 
 let submitting = ref(false);
 let message = ref("");
@@ -11,13 +12,10 @@ let email = ref("");
 let password = ref("");
 
 async function submitLoginForm() {
-  const client = new Axios({ baseURL: "http://localhost:3333" });
-  const authenticationHeader = {
-    Authorization: "Basic " + btoa(username.value + ":" + password.value),
-  };
+  setCredentials(username.value, password.value);
 
-  const response = await client.get("/user/", {
-    headers: authenticationHeader,
+  const response = await api_client.get("/user/", {
+    headers: getAuthorizationHeader(),
   });
 
   // Handles incorrect credentials
@@ -44,8 +42,9 @@ async function submitLoginForm() {
   }
 
   if (response.status == 200) {
-    message.value = "Successfully Registed, Logging in...";
+    message.value = "Logging in...";
     messageIsSuccess.value = true;
+    saveCredentials();
 
     return;
   }

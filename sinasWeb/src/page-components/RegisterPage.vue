@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { Axios, AxiosResponse } from "axios";
 import OperationResponse from "../ResponseModels/OperationResponse";
+import { api_client, getAuthorizationHeader, getAuthorizationHeaderString, saveCredentials } from "../API";
 
 let submitting = ref(false);
 let message = ref("");
@@ -11,17 +12,16 @@ let email = ref("sinas@ceiramail.com");
 let password = ref("12345");
 
 async function submitRegisterForm() {
-  const client = new Axios({ baseURL: "http://localhost:3333" });
-
   const request = {
     username: username.value,
     email: email.value,
     password: password.value,
   };
 
-  const response = await client.post("/user/", JSON.stringify(request), {
+  const response = await api_client.post("/user/", JSON.stringify(request), {
     headers: {
       "Content-Type": "application/json",
+      Authorization: getAuthorizationHeaderString(),
     },
   });
 
@@ -42,11 +42,10 @@ async function submitRegisterForm() {
   }
 
   if (response.status == 200) {
-    localStorage.setItem("username", username.value);
-    localStorage.setItem("email", email.value);
-
-    message.value = "Successfully Registed, Logging in...";
+    message.value = "Logging in...";
     messageIsSuccess.value = true;
+    saveCredentials();
+
     return;
   }
 
