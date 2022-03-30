@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
-import { getUsers } from "./User";
+import { createUser, getUsers } from "./User";
 import CORSMiddleware from "./CORSMiddleware";
 
 dotenv.config();
@@ -9,8 +9,8 @@ dotenv.config();
 const app: Express = express();
 const prismaClient: PrismaClient = new PrismaClient();
 
-app.use(express.json());
 app.use(CORSMiddleware);
+app.use(express.json());
 
 async function setUp() {
   await prismaClient.$connect();
@@ -21,5 +21,6 @@ async function setUp() {
 }
 
 app.get("/user", getUsers);
+app.post("/user", createUser);
 
 setUp();

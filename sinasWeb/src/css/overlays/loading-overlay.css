@@ -1,0 +1,9 @@
+.loading-overlay {
+  transition: opacity 0.3s cubic-bezier(0.33, 0.25, 0.32, 0.99);
+  @apply bg-slate-700 bg-opacity-95 left-0 right-0 top-0 bottom-0 rounded-md;
+
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
