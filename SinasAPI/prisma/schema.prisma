@@ -21,10 +21,9 @@ model User {
 }
 
 model Tropine {
-  id             String   @id @default(cuid())
-  content        String
-  followers_only Boolean  @default(false)
-  author         User     @relation(fields: [authorId], references: [id])
-  authorId       String
-  createdAt      DateTime @default(now())
+  id        String   @id @default(cuid())
+  content   String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
 }
