@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
 import { createUser, getUsers } from "./User";
 import CORSMiddleware from "./CORSMiddleware";
+import { createTropine } from "./Tropine";
 
 dotenv.config();
 
@@ -22,5 +23,6 @@ async function setUp() {
 
 app.get("/user", getUsers);
 app.post("/user", createUser);
+app.post("/tropine", createTropine);
 
 setUp();

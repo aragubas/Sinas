@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { Axios, AxiosResponse } from "axios";
 import OperationResponse from "../ResponseModels/OperationResponse";
 import { api_client, getAuthorizationHeader, saveCredentials, setCredentials } from "../API";
+import { router } from "../main";
 
 let submitting = ref(false);
 let message = ref("");
@@ -18,6 +19,8 @@ async function submitLoginForm() {
     headers: getAuthorizationHeader(),
   });
 
+  console.log(getAuthorizationHeader());
+
   // Handles incorrect credentials
   if (response.status == 400) {
     const data = JSON.parse(response.data.toString()) as OperationResponse;
@@ -25,7 +28,11 @@ async function submitLoginForm() {
 
     switch (data.message) {
       case "invalid_credentials":
-        response_message = "Incorrect username or password";
+        response_message = "Invalid Credentials Format.";
+        break;
+
+      case "invalid_password":
+        response_message = "Invalid password";
         break;
     }
 
@@ -46,6 +53,7 @@ async function submitLoginForm() {
     messageIsSuccess.value = true;
     saveCredentials();
 
+    router.push("/");
     return;
   }
 

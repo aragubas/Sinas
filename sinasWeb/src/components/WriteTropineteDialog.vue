@@ -1,10 +1,18 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, getCurrentInstance, ref } from "vue";
+import { api_client, getAuthorizationHeaderString } from "../API";
+import { router } from "../main";
 
-let composeText = ref("");
+let composeText = ref("ceira do sinas");
 let followersOnly = ref(false);
 let submitting = ref(false);
 let errorMessage = ref("");
+const emit = defineEmits(["close-dialog"]);
+
+interface TropineResponse {
+  status: string;
+  tropineID: string;
+}
 
 async function submit() {
   if (composeText.value == "" || composeText.value.length < 2) {
@@ -12,6 +20,25 @@ async function submit() {
     submitting.value = false;
 
     return;
+  }
+
+  const request = {
+    content: composeText.value,
+    followers_only: followersOnly.value,
+  };
+
+  const response = await api_client.post("/tropine/", JSON.stringify(request), {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: getAuthorizationHeaderString(),
+    },
+  });
+
+  if (response.status == 200) {
+    const sinas = JSON.parse(response.data) as TropineResponse;
+
+    router.push(`/tropine/${sinas.tropineID}`);
+    emit("close-dialog");
   }
 
   submitting.value = false;
@@ -38,10 +65,10 @@ const charCount = computed(() => {
         "
       >
         <textarea class="input w-full h-56 resize-none font-mono" v-model="composeText" maxlength="240"></textarea>
-        <p class="self-end font-mono" :class="composeText.length > 200 ? 'text-red-400' : ''">{{ charCount }}</p>
+        <p class="self-end font-mono" :class="composeText.length >= 200 ? 'text-red-400' : ''">{{ charCount }}</p>
         <div class="flex gap-2 items-center">
-          <input type="radio" class="input-radio" r id="followers-only-radio" />
-          <label for="followers-only-radio">Followers Only</label>
+          <input type="checkbox" v-model="followersOnly" id="followers-only-checkbox" />
+          <label for="followers-only-checkbox">Followers Only</label>
         </div>
 
         <p class="text-center text-lg mt-2 mb-2 text-red-400" v-if="errorMessage != ''">

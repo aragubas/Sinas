@@ -77,16 +77,21 @@ export async function getUsers(request: Request, response: Response) {
     return;
   }
 
-  const ceira = await prisma.user.findFirst({
+  console.log(authenticationHeader);
+
+  const user = await prisma.user.findFirst({
     where: { username: authHeader[0] },
   });
 
-  if (!ceira) {
+  if (!user) {
     response.status(404).json(new ErrorResponse("user_not_found"));
     return;
   }
 
-  console.log(ceira);
+  if (user.password != authHeader[1]) {
+    response.status(400).json(new ErrorResponse("invalid_password"));
+    return;
+  }
 
-  await response.json(ceira);
+  await response.json(new SuccessResponse("user_found"));
 }

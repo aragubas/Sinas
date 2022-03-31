@@ -21,7 +21,6 @@ async function submitRegisterForm() {
   const response = await api_client.post("/user/", JSON.stringify(request), {
     headers: {
       "Content-Type": "application/json",
-      Authorization: getAuthorizationHeaderString(),
     },
   });
 

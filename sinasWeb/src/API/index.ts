@@ -12,7 +12,7 @@ export function setCredentials(user: string, password: string) {
 export const api_client = new Axios({ baseURL: "http://localhost:3333" });
 
 export function getAuthorizationHeaderString(): string {
-  return `Basic ${btoa(currentUser + ":" + currentPassword)}`;
+  return `Basic ${btoa(currentUser.value + ":" + currentPassword.value)}`;
 }
 
 export function getAuthorizationHeader(): AxiosRequestHeaders {

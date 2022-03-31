@@ -30,7 +30,7 @@ let composeMode = ref(true);
     </div>
 
     <div class="p-2 border-l border-r border-slate-700">
-      <p>Sinas</p>
+      <router-view></router-view>
     </div>
 
     <aside class="p-2">

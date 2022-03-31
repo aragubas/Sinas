@@ -4,16 +4,17 @@ import App from "./App.vue";
 import LoginPageVue from "./page-components/LoginPage.vue";
 import RegisterPageVue from "./page-components/RegisterPage.vue";
 import HomescreenVue from "./page-components/Homescreen.vue";
+import TropineViewVue from "./page-components/TropineView.vue";
 import "./index.css";
 import { loadCredentials } from "./API";
 
 const routes = [
-  { path: "/", component: HomescreenVue },
+  { path: "/", component: HomescreenVue, children: [{ path: "tropine/:tropineID", component: TropineViewVue }] },
   { path: "/login", component: LoginPageVue },
   { path: "/register", component: RegisterPageVue },
 ];
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
