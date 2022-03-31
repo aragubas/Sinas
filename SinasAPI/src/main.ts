@@ -23,7 +23,7 @@ async function setUp() {
 }
 
 app.get("/user", getUsers);
-app.get("/tropine", getTropine);
+app.get("/tropine/:tropineID", getTropine);
 
 app.post("/user", createUser);
 app.post("/tropine", createTropine);

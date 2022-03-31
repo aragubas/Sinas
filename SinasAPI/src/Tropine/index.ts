@@ -74,16 +74,16 @@ export async function createTropine(request: Request, response: Response) {
 
 export async function getTropine(request: Request, response: Response) {
   // Get the request body
-  const body = request.body as GetTropineRequest;
+  const query = request.params["tropineID"];
 
   // Check if the request body is valid
-  if (!body.tropineID) {
+  if (!query) {
     response.status(400).send(new ErrorResponse("missing_parameters"));
     return;
   }
 
   const tropine = await prisma.tropine.findUnique({
-    where: { id: body.tropineID },
+    where: { id: query },
   });
 
   // Check if tropine exists
