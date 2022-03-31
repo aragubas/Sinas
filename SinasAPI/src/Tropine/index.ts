@@ -1,5 +1,7 @@
 import express, { Express, Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
+import AuthUser from "../Models/AuthUser";
+import Authentication from "../Authentication";
 
 class ErrorResponse {
   status = "error";
@@ -17,34 +19,22 @@ class SuccessResponse {
   }
 }
 
+class GetTropineResponse {}
+
 interface CreateTropineRequest {
   content: string;
   followers_only: boolean;
 }
 
+interface GetTropineRequest {
+  tropineID: string;
+}
+
 const prisma = new PrismaClient();
 
 export async function createTropine(request: Request, response: Response) {
-  const authenticationHeader = request.headers.authorization;
-
-  if (!authenticationHeader) {
-    response.status(400).json(new ErrorResponse("invalid_credentials"));
-    return;
-  }
-
-  let authHeader = Buffer.from(authenticationHeader.split(" ")[1], "base64").toString().split(":");
-
-  if (authHeader[0].length < 3 || authHeader[1].length < 4) {
-    response.status(400).json(new ErrorResponse("invalid_credentials"));
-    return;
-  }
-
-  const user = await prisma.user.findFirst({
-    where: { username: authHeader[0] },
-  });
-
-  if (user == null) {
-    response.status(400).json(new ErrorResponse("invalid_credentials"));
+  const user = await Authentication(request, response);
+  if (!user) {
     return;
   }
 

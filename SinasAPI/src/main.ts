@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import { createUser, getUsers } from "./User";
 import CORSMiddleware from "./CORSMiddleware";
 import { createTropine } from "./Tropine";
+import Authentication from "./Authentication";
 
 dotenv.config();
 

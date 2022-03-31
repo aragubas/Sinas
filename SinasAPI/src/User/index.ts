@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import Authentication from "../Authentication";
 
 const prisma = new PrismaClient();
 
@@ -63,33 +64,8 @@ export async function createUser(request: Request, response: Response) {
 }
 
 export async function getUsers(request: Request, response: Response) {
-  const authenticationHeader = request.headers.authorization;
-
-  if (!authenticationHeader) {
-    response.status(400).json(new ErrorResponse("invalid_credentials"));
-    return;
-  }
-
-  let authHeader = Buffer.from(authenticationHeader.split(" ")[1], "base64").toString().split(":");
-
-  if (authHeader[0].length < 3 || authHeader[1].length < 4) {
-    response.status(400).json(new ErrorResponse("invalid_credentials"));
-    return;
-  }
-
-  console.log(authenticationHeader);
-
-  const user = await prisma.user.findFirst({
-    where: { username: authHeader[0] },
-  });
-
+  const user = await Authentication(request, response);
   if (!user) {
-    response.status(404).json(new ErrorResponse("user_not_found"));
-    return;
-  }
-
-  if (user.password != authHeader[1]) {
-    response.status(400).json(new ErrorResponse("invalid_password"));
     return;
   }
 
