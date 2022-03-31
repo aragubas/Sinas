@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import Authentication from "../Authentication";
+import AuthUser from "../Models/AuthUser";
 
 const prisma = new PrismaClient();
 
@@ -14,9 +15,9 @@ class ErrorResponse {
 
 class SuccessResponse {
   status = "success";
-  message: string;
-  constructor(message: string) {
-    this.message = message;
+  user: AuthUser;
+  constructor(user: User) {
+    this.user = new AuthUser(user);
   }
 }
 
@@ -41,11 +42,11 @@ export async function createUser(request: Request, response: Response) {
     return;
   }
 
+  // Check if the user already exists
   const userCheck = await prisma.user.findFirst({
-    where: { username: body.username, email: body.email },
+    where: { username: body.username.toLowerCase(), email: body.email },
   });
 
-  // Check if user already exists
   if (userCheck) {
     response.status(400).send(new ErrorResponse("user_already_exists"));
     return;
@@ -54,13 +55,13 @@ export async function createUser(request: Request, response: Response) {
   // Create user
   const user = await prisma.user.create({
     data: {
-      username: body.username,
+      username: body.username.toLowerCase(),
       email: body.email,
       password: body.password,
     },
   });
 
-  response.status(200).send(new SuccessResponse("user_created_successfully"));
+  response.status(200).send(new SuccessResponse(user));
 }
 
 export async function getUsers(request: Request, response: Response) {
@@ -69,5 +70,5 @@ export async function getUsers(request: Request, response: Response) {
     return;
   }
 
-  await response.json(new SuccessResponse("user_found"));
+  await response.json({ status: "success", user: user });
 }
