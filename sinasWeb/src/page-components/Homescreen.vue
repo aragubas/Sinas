@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { currentUser } from "../API";
+import { checkCredentials, currentUser } from "../API";
 import WriteTropineteDialog from "../components/WriteTropineteDialog.vue";
+import { router } from "../main";
 
-let composeMode = ref(true);
+let composeMode = ref(false);
 </script>
 
 <template>

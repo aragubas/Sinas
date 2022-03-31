@@ -3,17 +3,18 @@ import { ref } from "vue";
 import { Axios, AxiosResponse } from "axios";
 import OperationResponse from "../ResponseModels/OperationResponse";
 import { api_client, getAuthorizationHeader, getAuthorizationHeaderString, saveCredentials } from "../API";
+import { router } from "../main";
 
 let submitting = ref(false);
 let message = ref("");
 let messageIsSuccess = ref(false);
-let username = ref("Ceira");
-let email = ref("sinas@ceiramail.com");
-let password = ref("12345");
+let username = ref("");
+let email = ref("");
+let password = ref("");
 
 async function submitRegisterForm() {
   const request = {
-    username: username.value,
+    username: username.value.toLowerCase(),
     email: email.value,
     password: password.value,
   };
@@ -45,6 +46,7 @@ async function submitRegisterForm() {
     messageIsSuccess.value = true;
     saveCredentials();
 
+    router.push("/");
     return;
   }
 
@@ -118,7 +120,7 @@ async function submitRegisterForm() {
         <footer class="text-xs mt-4">
           <p>
             Already have an account?
-            <router-link to="/" class="text-blue-500">Log in</router-link>
+            <router-link to="/login" class="text-blue-500">Log in</router-link>
           </p>
         </footer>
       </form>

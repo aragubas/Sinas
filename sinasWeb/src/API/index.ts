@@ -28,7 +28,13 @@ export function saveCredentials() {
   localStorage.setItem("password", currentPassword.value);
 }
 
-export function loadCredentials(): boolean {
+export async function checkCredentials(): Promise<boolean> {
+  const response = await api_client.get("/user/", { headers: getAuthorizationHeader() });
+  console.log("tropine");
+  return response.status == 200;
+}
+
+export async function loadCredentials(): Promise<boolean> {
   if (localStorage.getItem("user") == null || localStorage.getItem("password") == null) {
     return false;
   }
@@ -36,5 +42,5 @@ export function loadCredentials(): boolean {
   currentUser.value = localStorage.getItem("user") as string;
   currentPassword.value = localStorage.getItem("password") as string;
 
-  return true;
+  return checkCredentials();
 }

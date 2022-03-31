@@ -25,7 +25,7 @@ app.use(router);
 app.mount("#app");
 
 // Credentials are stored in localStorage
-if (loadCredentials()) {
+if (await loadCredentials()) {
   router.push("/");
 } else {
   router.push("/login");

@@ -13,13 +13,11 @@ let email = ref("");
 let password = ref("");
 
 async function submitLoginForm() {
-  setCredentials(username.value, password.value);
+  setCredentials(username.value.toLowerCase(), password.value);
 
   const response = await api_client.get("/user/", {
     headers: getAuthorizationHeader(),
   });
-
-  console.log(getAuthorizationHeader());
 
   // Handles incorrect credentials
   if (response.status == 400) {
