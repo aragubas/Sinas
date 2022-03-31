@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { currentUser } from "../API";
+import WriteTropineteDialog from "../components/WriteTropineteDialog.vue";
+
+let composeMode = ref(true);
 </script>
 
 <template>
@@ -12,11 +16,15 @@ import { currentUser } from "../API";
 
       <ul class="flex flex-col gap-2">
         <li>
-          <a href="#" class="button">Home</a>
+          <a href="#" class="button bg-slate-700">Home</a>
         </li>
 
         <li>
-          <a href="#" class="button">Profile</a>
+          <a href="#" class="button bg-slate-700">Profile</a>
+        </li>
+
+        <li>
+          <a href="#" class="button" @click="composeMode = true">Tropine</a>
         </li>
       </ul>
     </div>
@@ -28,6 +36,8 @@ import { currentUser } from "../API";
     <aside class="p-2">
       <p>Ceira</p>
     </aside>
+
+    <WriteTropineteDialog v-if="composeMode" @close-dialog="composeMode = false"></WriteTropineteDialog>
   </div>
 </template>
 
